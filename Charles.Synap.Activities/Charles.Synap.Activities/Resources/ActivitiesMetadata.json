@@ -1,0 +1,167 @@
+{
+  "resourceManagerName": "Charles.Synap.Activities.Resources.Resources",
+  "activities": [
+    {
+      "fullName": "Charles.Synap.Activities.SynapDARequest",
+      "shortName": "SynapDA Request",
+      "displayNameKey": "Synap_DA_Request",
+      "descriptionKey": "ActivityTemplate_Description",
+      "categoryKey": "DocumentParser",
+      "Properties": [
+        {
+          "Name": "Endpoint",
+          "DisplayNameKey": "Synap_Endpoint",
+          "TooltipKey": "Synap_Endpoint_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Login"
+          }
+        },
+        {
+          "Name": "ApiKey",
+          "DisplayNameKey": "Synap_APIKEY",
+          "TooltipKey": "Synap_APIKEY_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Login"
+          }
+        },
+        {
+          "Name": "InputFilePath",
+          "DisplayNameKey": "Synap_InputFIlePath",
+          "TooltipKey": "Synap_InputFilePath_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "FID",
+          "DisplayNameKey": "Synap_FID",
+          "TooltipKey": "Synap_FID_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        }
+      ],
+      "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDARequestViewModel"
+    },
+    {
+      "fullName": "Charles.Synap.Activities.SynapDAGetResult",
+      "shortName": "SynapDA Result",
+      "displayNameKey": "Synap_DA_Result",
+      "descriptionKey": "ActivityTemplate_Description",
+      "categoryKey": "DocumentParser",
+      "Properties": [
+        {
+          "Name": "Endpoint",
+          "DisplayNameKey": "Synap_Endpoint",
+          "TooltipKey": "Synap_Endpoint_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Login"
+          }
+        },
+        {
+          "Name": "ApiKey",
+          "DisplayNameKey": "Synap_APIKEY",
+          "TooltipKey": "Synap_APIKEY_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Login"
+          }
+        },
+        {
+          "Name": "FID",
+          "DisplayNameKey": "Synap_FID",
+          "TooltipKey": "Synap_FID_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "ZipFilePath",
+          "DisplayNameKey": "Synap_OutputZipFilePath",
+          "TooltipKey": "Synap_OutputZipFilePath_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        }
+      ],
+      "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAGetResultViewModel"
+    },
+    {
+      "fullName": "Charles.Synap.Activities.SynapDAConvertResultToExcel",
+      "shortName": "SynapDA ToExcel",
+      "displayNameKey": "Synap_DA_Convert_Excel",
+      "descriptionKey": "ActivityTemplate_Description",
+      "categoryKey": "DocumentParser",
+      "Properties": [
+        {
+          "Name": "ResultZipFIle",
+          "DisplayNameKey": "Synap_ResultZipFIle",
+          "TooltipKey": "Synap_ResultZipFile_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "ResultExcelFile",
+          "DisplayNameKey": "Synap_ExcelFIle",
+          "TooltipKey": "Synap_ExcelFIle_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "TableCount",
+          "DisplayNameKey": "Synap_TableCount",
+          "TooltipKey": "Synap_TableCount_Tip",
+          "IsRequired": true,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "ErrorMessage",
+          "DisplayNameKey": "Synap_ErrorMessage",
+          "TooltipKey": "Synap_ErrorMessage_Tip",
+          "IsRequired": true,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        }
+      ],
+      "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAConvertResultToExcelViewModel"
+    }
+  ]
+}
