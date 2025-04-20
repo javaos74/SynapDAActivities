@@ -101,13 +101,15 @@ namespace Charles.Synap.Activities
 
                     }
                 }
+                Directory.Delete(tempDirectoryPath, true); // 변환 후 임시 디렉토리 삭제
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"오류 발생: {ex.Message}");
+                tableIndex = -1;
             }
 
-            return tableIndex-1;
+            return tableIndex;
         }
 
         protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
