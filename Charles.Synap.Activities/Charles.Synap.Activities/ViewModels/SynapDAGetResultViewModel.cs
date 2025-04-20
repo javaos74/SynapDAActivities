@@ -3,7 +3,7 @@ using System.Activities.DesignViewModels;
 
 namespace Charles.Synap.Activities.ViewModels
 {
-    public class SynapDAGetResultViweModel : DesignPropertiesViewModel
+    public class SynapDAGetResultViewModel : DesignPropertiesViewModel
     {
         /*
          * The result property comes from the activity's base class
@@ -12,7 +12,7 @@ namespace Charles.Synap.Activities.ViewModels
         public DesignInArgument<string> ApiKey { get; set; }
         public DesignInArgument<string> FID { get; set; }
         public DesignInArgument<string> ZipFilePath { get; set; }
-        public SynapDAGetResultViweModel(IDesignServices services) : base(services)
+        public SynapDAGetResultViewModel(IDesignServices services) : base(services)
         {
         }
 

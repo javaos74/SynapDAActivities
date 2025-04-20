@@ -124,6 +124,15 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
+        ///   Synap DA Convert To Markdown과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_DA_Convert_Markdown {
+            get {
+                return ResourceManager.GetString("Synap_DA_Convert_Markdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Synap DA Request과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_DA_Request {
@@ -232,6 +241,24 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
+        ///   Converted Markdown body과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_Markdown_Body {
+            get {
+                return ResourceManager.GetString("Synap_Markdown_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Converted Markdown body as string 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_Markdown_Body_Tip {
+            get {
+                return ResourceManager.GetString("Synap_Markdown_Body_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Output Zip File Path과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_OutputZipFilePath {
@@ -246,6 +273,24 @@ namespace Charles.Synap.Activities {
         public static string Synap_OutputZipFilePath_Tip {
             get {
                 return ResourceManager.GetString("Synap_OutputZipFilePath_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Page Count과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_PageCount {
+            get {
+                return ResourceManager.GetString("Synap_PageCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Page Count과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_PageCount_Tip {
+            get {
+                return ResourceManager.GetString("Synap_PageCount_Tip", resourceCulture);
             }
         }
         

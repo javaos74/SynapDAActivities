@@ -29,7 +29,7 @@ namespace Charles.Synap.Activities
         {
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage.License.SetNonCommercialPersonal("Charles Kim");
-
+            ZipArchive archive = null;
             FileInfo excelFile = new FileInfo(excelFilePath);
             try
             {
@@ -37,10 +37,11 @@ namespace Charles.Synap.Activities
                 string uniqueDirectoryName = Guid.NewGuid().ToString();
                 string tempDirectoryPath = Path.Combine(tempRoot, uniqueDirectoryName);
 
-                using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
+                using (archive = ZipFile.OpenRead(zipFilePath))
                 {
                     // 압축 파일 내에서 확장자가 ".xml"인 파일들을 필터링합니다.
-                    var xmlFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase));
+                    var xmlFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                                                  .OrderBy( entry => entry.Name, StringComparer.OrdinalIgnoreCase);
 #if DEBUG
                     Console.WriteLine($"압축 파일 '{zipFilePath}'에서 XML 파일 추출 시작...");
 #endif
@@ -66,6 +67,10 @@ namespace Charles.Synap.Activities
 
                             foreach (var table in tables)
                             {
+                                if (package.Workbook.Worksheets.Any(ws => ws.Name == $"tab{tableIndex}")) //exact matching
+                                {
+                                    package.Workbook.Worksheets.Delete($"tab{tableIndex}"); // 중복된 시트 이름이 있을 경우 삭제
+                                }
                                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"tab{tableIndex}");
                                 int row = 1;
 
@@ -107,8 +112,10 @@ namespace Charles.Synap.Activities
             {
                 Console.WriteLine($"오류 발생: {ex.Message}");
                 tableIndex = -1;
+                if(archive != null)
+                    archive.Dispose();  
             }
-
+            
             return tableIndex;
         }
 

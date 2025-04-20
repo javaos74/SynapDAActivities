@@ -126,11 +126,11 @@
     <comment>Synap DA Request</comment>
   </data>
   <data name="Synap_APIKEY" xml:space="preserve">
-    <value>사이냅소프트 DA APKKEY</value>
+    <value>사이냅소프트 DA 인증키</value>
     <comment>Synap Document Analyzer Api Key</comment>
   </data>
   <data name="Synap_APIKEY_Tip" xml:space="preserve">
-    <value>사이냅소프트 DA APIKEY</value>
+    <value>사이냅소프트 DA 인증키</value>
     <comment>Synap Document Analyzer Api Key</comment>
   </data>
   <data name="Synap_Endpoint" xml:space="preserve">
@@ -213,5 +213,20 @@
   <data name="Synap_DA_Convert_Excel" xml:space="preserve">
     <value>사이냅소프트 DA 테이블 엑셀로 전환</value>
     <comment>Synap Convert Table To Excel</comment>
+  </data>
+  <data name="Synap_DA_Convert_Markdown" xml:space="preserve">
+    <value>사이냅소프트 DA 마크다운으로 변환</value>
+  </data>
+  <data name="Synap_Markdown_Body" xml:space="preserve">
+    <value>변환된 마크다운 본문</value>
+  </data>
+  <data name="Synap_Markdown_Body_Tip" xml:space="preserve">
+    <value>문자열 형태의 마크다운 데이터 본문</value>
+  </data>
+  <data name="Synap_PageCount" xml:space="preserve">
+    <value>페이지 수</value>
+  </data>
+  <data name="Synap_PageCount_Tip" xml:space="preserve">
+    <value>마크다운 본문의 페이지 수 </value>
   </data>
 </root>

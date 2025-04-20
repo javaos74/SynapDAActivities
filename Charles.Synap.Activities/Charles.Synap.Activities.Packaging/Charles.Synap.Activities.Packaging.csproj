@@ -11,17 +11,23 @@
 		<VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
 		<VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalMinutes.ToString("F0"))</VersionRevision>
 		<PackageId>Synapsoft.DA.Activities</PackageId>
-		<VersionPrefix Condition="'$(Configuration)' == 'Release'">1.0.1</VersionPrefix>
+		<VersionPrefix Condition="'$(Configuration)' == 'Release'">1.0.2</VersionPrefix>
 		<VersionPrefix Condition="'$(Configuration)' == 'Debug'">0.1.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
 		<Authors>Charles Kim</Authors>
+    <PackageDescription>Synapsoft DA Activities</PackageDescription>
 		<PackageTags>UiPathActivities</PackageTags>
 		<Product>Charles.Synap.Activities.Packaging</Product>
-		<PackageIconUrl>https://download.uipath.com/UI_icon.png?web</PackageIconUrl>
+		<PackageIconUrl>https://www.synapsoft.co.kr/wp-content/uploads/2019/03/cropped-favicon-1-32x32.png</PackageIconUrl>
 		<PackageOutputPath>..\Output\Activities\Packages\</PackageOutputPath>
-		<TargetsForTfmSpecificBuildOutput>AddDlls</TargetsForTfmSpecificBuildOutput>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);AddDlls</TargetsForTfmSpecificBuildOutput>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="8.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  
 	<Target Name="AddDlls">
 		<!-- PDBs for debug-->
 		<ItemGroup Condition="'$(Configuration)' == 'Debug'">
@@ -29,6 +35,7 @@
 		</ItemGroup>
 		<ItemGroup>
 			<BuildOutputInPackage Include="$(OutputPath)Charles.Synap.Activities.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)ko\Charles.Synap.Activities.resources.dll" TargetPath="ko\Charles.Synap.Activities.resources.dll" />
 		</ItemGroup>
 	</Target>
 
@@ -48,16 +55,10 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Charles.Synap.Activities\Charles.Synap.Activities.csproj">
-			<PrivateAssets>All</PrivateAssets>
+      <PrivateAssets>All</PrivateAssets>
 		</ProjectReference>
 	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="EPPlus" Version="8.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Activities.ViewModels" Version="1.0.0-20230919.1" />
-    <PackageReference Include="UiPath.Activities.Api" Version="22.4.1" PrivateAssets="All" />
-    <PackageReference Include="UiPath.Workflow" Version="6.0.0-20220401-03" />
-  </ItemGroup>
+
 
 </Project>

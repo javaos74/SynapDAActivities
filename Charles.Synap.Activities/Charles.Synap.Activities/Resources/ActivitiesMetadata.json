@@ -6,6 +6,7 @@
       "shortName": "SynapDA Request",
       "displayNameKey": "Synap_DA_Request",
       "descriptionKey": "ActivityTemplate_Description",
+      "iconKey": "CI_synasoft.png",
       "categoryKey": "DocumentParser",
       "Properties": [
         {
@@ -59,6 +60,7 @@
       "fullName": "Charles.Synap.Activities.SynapDAGetResult",
       "shortName": "SynapDA Result",
       "displayNameKey": "Synap_DA_Result",
+      "iconKey": "CI_synasoft.png",
       "descriptionKey": "ActivityTemplate_Description",
       "categoryKey": "DocumentParser",
       "Properties": [
@@ -113,6 +115,7 @@
       "fullName": "Charles.Synap.Activities.SynapDAConvertResultToExcel",
       "shortName": "SynapDA ToExcel",
       "displayNameKey": "Synap_DA_Convert_Excel",
+      "iconKey": "CI_synasoft.png",
       "descriptionKey": "ActivityTemplate_Description",
       "categoryKey": "DocumentParser",
       "Properties": [
@@ -142,8 +145,8 @@
           "Name": "TableCount",
           "DisplayNameKey": "Synap_TableCount",
           "TooltipKey": "Synap_TableCount_Tip",
-          "IsRequired": true,
-          "IsPrincipal": false,
+          "IsRequired": false,
+          "IsPrincipal": true,
           "IsVisible": true,
           "Category": {
             "DisplayNameKey": "Output"
@@ -153,7 +156,7 @@
           "Name": "ErrorMessage",
           "DisplayNameKey": "Synap_ErrorMessage",
           "TooltipKey": "Synap_ErrorMessage_Tip",
-          "IsRequired": true,
+          "IsRequired": false,
           "IsPrincipal": false,
           "IsVisible": true,
           "Category": {
@@ -162,6 +165,61 @@
         }
       ],
       "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAConvertResultToExcelViewModel"
+    },
+    {
+      "fullName": "Charles.Synap.Activities.SynapDAConvertToMarkdown",
+      "shortName": "SynapDA ToMarkdown",
+      "displayNameKey": "Synap_DA_Convert_Markdown",
+      "iconKey": "CI_synasoft.png",
+      "descriptionKey": "ActivityTemplate_Description",
+      "categoryKey": "DocumentParser",
+      "Properties": [
+        {
+          "Name": "ResultZipFIle",
+          "DisplayNameKey": "Synap_ResultZipFIle",
+          "TooltipKey": "Synap_ResultZipFile_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "MarkdownBody",
+          "DisplayNameKey": "Synap_Markdown_Body",
+          "TooltipKey": "Synap_Markdown_Body_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "PageCount",
+          "DisplayNameKey": "Synap_PageCount",
+          "TooltipKey": "Synap_PageCount_Tip",
+          "IsRequired": false,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "ErrorMessage",
+          "DisplayNameKey": "Synap_ErrorMessage",
+          "TooltipKey": "Synap_ErrorMessage_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        }
+      ],
+      "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAConvertToMarkdownViewModel"
     }
   ]
 }

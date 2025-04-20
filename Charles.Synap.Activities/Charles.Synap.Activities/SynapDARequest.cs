@@ -42,7 +42,6 @@ namespace Charles.Synap.Activities
         private string fid = string.Empty;
         private string errorMessage;
         private int status;
-        private string _fullText;
 
         public SynapDARequest()
         {

@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <None Remove="Resources\ActivitiesMetadata.json" />
+    <None Include="Resources\Icons\CI_synapsoft.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\ActivitiesMetadata.json" />
+    <EmbeddedResource Include="Resources\Icons\CI_synapsoft.png" />
   </ItemGroup>
 
   <ItemGroup>

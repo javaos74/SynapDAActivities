@@ -214,4 +214,24 @@
     <value>Synap DA Convert Table To Excel</value>
     <comment>Synap Convert Table To Excel</comment>
   </data>
+  <data name="Synap_DA_Convert_Markdown" xml:space="preserve">
+    <value>Synap DA Convert To Markdown</value>
+    <comment>Synap DA Convert To Markdown</comment>
+  </data>
+  <data name="Synap_Markdown_Body" xml:space="preserve">
+    <value>Converted Markdown body</value>
+    <comment>Converted Markdown body</comment>
+  </data>
+  <data name="Synap_Markdown_Body_Tip" xml:space="preserve">
+    <value>Converted Markdown body as string </value>
+    <comment>Converted Markdown body as string </comment>
+  </data>
+  <data name="Synap_PageCount" xml:space="preserve">
+    <value>Page Count</value>
+    <comment>Page Count of markdown body</comment>
+  </data>
+  <data name="Synap_PageCount_Tip" xml:space="preserve">
+    <value>Page Count</value>
+    <comment>Page count of converted markdown body</comment>
+  </data>
 </root>
