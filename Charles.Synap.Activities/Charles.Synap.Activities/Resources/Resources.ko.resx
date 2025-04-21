@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActivityTemplate_Description" xml:space="preserve">
-    <value>Synap Document Analyzer </value>
+    <value>사이냅소프트 문서 분석</value>
     <comment>activity description</comment>
   </data>
   <data name="Synap_DA_Request" xml:space="preserve">
@@ -202,13 +202,13 @@
     <comment>Synap DA Result zip file contains all results ( md, xml, json)</comment>
   </data>
   <data name="Input" xml:space="preserve">
-    <value>Input</value>
+    <value>입력</value>
   </data>
   <data name="Output" xml:space="preserve">
-    <value>Output</value>
+    <value>출력</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>로그인</value>
   </data>
   <data name="Synap_DA_Convert_Excel" xml:space="preserve">
     <value>사이냅소프트 DA 테이블 엑셀로 전환</value>
@@ -228,5 +228,11 @@
   </data>
   <data name="Synap_PageCount_Tip" xml:space="preserve">
     <value>마크다운 본문의 페이지 수 </value>
+  </data>
+  <data name="Synap_Status" xml:space="preserve">
+    <value>서버 응답 코드</value>
+  </data>
+  <data name="Synap_Status_Tip" xml:space="preserve">
+    <value>서버 응답 코드 (200 정상 나머지는 오류) </value>
   </data>
 </root>

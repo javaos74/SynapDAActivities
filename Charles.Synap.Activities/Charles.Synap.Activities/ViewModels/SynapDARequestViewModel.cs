@@ -12,6 +12,8 @@ namespace Charles.Synap.Activities.ViewModels
         public DesignInArgument<string> ApiKey { get; set; }
         public DesignInArgument<string> InputFilePath { get; set; }
         public DesignOutArgument<string> FID { get; set; }
+        public DesignOutArgument<string> ErrorMessage { get; set; }
+        public DesignOutArgument<int> Status { get; set; }
 
         public SynapDARequestViewModel(IDesignServices services) : base(services)
         {
@@ -31,6 +33,8 @@ namespace Charles.Synap.Activities.ViewModels
             ApiKey.OrderIndex = propertyOrderIndex++;
             InputFilePath.OrderIndex = propertyOrderIndex++;
             FID.OrderIndex = propertyOrderIndex++;
+            Status.OrderIndex = propertyOrderIndex++;
+            ErrorMessage.OrderIndex = propertyOrderIndex++;
 
         }
     }

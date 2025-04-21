@@ -313,6 +313,24 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
+        ///   Server Status code과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_Status {
+            get {
+                return ResourceManager.GetString("Synap_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server status code ( 200 OK otherwise error) 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_Status_Tip {
+            get {
+                return ResourceManager.GetString("Synap_Status_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Table Count과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_TableCount {

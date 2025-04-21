@@ -80,8 +80,7 @@ namespace Charles.Synap.Activities
             }
             else
             {
-                JObject respJson = JObject.Parse(_result.body);
-                errorMessage = respJson["result"].ToString();
+                errorMessage = _result.body;
                 status = (int)_result.status;
             }
 

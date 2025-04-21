@@ -234,4 +234,12 @@
     <value>Page Count</value>
     <comment>Page count of converted markdown body</comment>
   </data>
+  <data name="Synap_Status" xml:space="preserve">
+    <value>Server Status code</value>
+    <comment>Server Status code</comment>
+  </data>
+  <data name="Synap_Status_Tip" xml:space="preserve">
+    <value>Server status code ( 200 OK otherwise error) </value>
+    <comment>Server status code</comment>
+  </data>
 </root>

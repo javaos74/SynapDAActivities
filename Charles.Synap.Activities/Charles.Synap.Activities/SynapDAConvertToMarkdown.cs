@@ -36,40 +36,43 @@ namespace Charles.Synap.Activities
                 string uniqueDirectoryName = Guid.NewGuid().ToString();
                 string tempDirectoryPath = Path.Combine(tempRoot, uniqueDirectoryName);
 
-                using ( archive = ZipFile.OpenRead(zipFilePath))
+                using (FileStream fileStream = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    // 압축 파일 내에서 확장자가 ".xml"인 파일들을 필터링합니다.
-                    var mdFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
-                                                 .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase);
-#if DEBUG
-                    Console.WriteLine($"압축 파일 '{zipFilePath}'에서 MD 파일 추출 시작...");
-#endif
-
-                    foreach (ZipArchiveEntry entry in mdFiles)
+                    using (archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
-                        string extractedFilePath = Path.Combine(tempDirectoryPath, entry.FullName);
+                        // 압축 파일 내에서 확장자가 ".xml"인 파일들을 필터링합니다.
+                        var mdFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+                                                     .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase);
+#if DEBUG
+                        Console.WriteLine($"압축 파일 '{zipFilePath}'에서 MD 파일 추출 시작...");
+#endif
 
-                        // 디렉토리 구조를 유지하기 위해 필요한 하위 디렉토리를 생성합니다.
-                        string directoryName = Path.GetDirectoryName(extractedFilePath);
-                        if (!string.IsNullOrEmpty(directoryName) && !Directory.Exists(directoryName))
+                        foreach (ZipArchiveEntry entry in mdFiles)
                         {
-                            Directory.CreateDirectory(directoryName);
-                        }
+                            string extractedFilePath = Path.Combine(tempDirectoryPath, entry.FullName);
+
+                            // 디렉토리 구조를 유지하기 위해 필요한 하위 디렉토리를 생성합니다.
+                            string directoryName = Path.GetDirectoryName(extractedFilePath);
+                            if (!string.IsNullOrEmpty(directoryName) && !Directory.Exists(directoryName))
+                            {
+                                Directory.CreateDirectory(directoryName);
+                            }
 #if DEBUG
-                        Console.WriteLine($"  '{entry.FullName}' 추출 중...");
+                            Console.WriteLine($"  '{entry.FullName}' 추출 중...");
 #endif
-                        entry.ExtractToFile(extractedFilePath, true); // true: 이미 파일이 존재하면 덮어쓰기
+                            entry.ExtractToFile(extractedFilePath, true); // true: 이미 파일이 존재하면 덮어쓰기
 
 #if DEBUG
-                        Console.WriteLine($"  '{entry.FullName}' 추출 & markdown merge 완료: '{extractedFilePath}'");
+                            Console.WriteLine($"  '{entry.FullName}' 추출 & markdown merge 완료: '{extractedFilePath}'");
 #endif
-                        _mdbodybuffer.AppendLine(File.ReadAllText(extractedFilePath)); // Read the content of the extracted file and append it to mdbody
-                        _mdbodybuffer.AppendLine("\\newpage"); // Add a new line for separation
-                        File.Delete(extractedFilePath); // 변환 후 XML 파일 삭제
-                        pageCount++;
+                            _mdbodybuffer.AppendLine(File.ReadAllText(extractedFilePath)); // Read the content of the extracted file and append it to mdbody
+                            _mdbodybuffer.AppendLine("\\newpage"); // Add a new line for separation
+                            File.Delete(extractedFilePath); // 변환 후 XML 파일 삭제
+                            pageCount++;
+                        }
                     }
+                    Directory.Delete(tempDirectoryPath, true); // 변환 후 임시 디렉토리 삭제
                 }
-                Directory.Delete(tempDirectoryPath, true); // 변환 후 임시 디렉토리 삭제
             }
             catch (Exception ex)
             {

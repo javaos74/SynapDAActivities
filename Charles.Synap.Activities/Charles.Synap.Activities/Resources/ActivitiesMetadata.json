@@ -52,6 +52,28 @@
           "Category": {
             "DisplayNameKey": "Output"
           }
+        },
+        {
+          "Name": "Status",
+          "DisplayNameKey": "Synap_Status",
+          "TooltipKey": "Synap_Status_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "ErrorMessage",
+          "DisplayNameKey": "Synap_ErrorMessage",
+          "TooltipKey": "Synap_ErrorMessage_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
         }
       ],
       "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDARequestViewModel"
