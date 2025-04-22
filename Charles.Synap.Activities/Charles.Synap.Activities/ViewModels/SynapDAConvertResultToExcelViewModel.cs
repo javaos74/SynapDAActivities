@@ -7,12 +7,13 @@ using System.Activities.DesignViewModels;
 using System.Net;
 using System.Security.Cryptography;
 using System.Activities;
+using UiPath.Platform.ResourceHandling;
 
 namespace Charles.Synap.Activities.ViewModels
 {
     public class SynapDAConvertResultToExcelViewModel : DesignPropertiesViewModel
     {
-        public DesignInArgument<string> ResultZipFIle { get; set; }
+        public DesignInArgument<IResource> ResultZip { get; set; }
         public DesignInArgument<string> ResultExcelFile { get; set; }
         public DesignOutArgument<int> TableCount { get; set; }
         public DesignOutArgument<string> ErrorMessage { get; set; }
@@ -31,7 +32,7 @@ namespace Charles.Synap.Activities.ViewModels
             PersistValuesChangedDuringInit(); // mandatory call only when you change the values of properties during initialization
             int propertyOrderIndex = 1;
 
-            ResultZipFIle.OrderIndex = propertyOrderIndex++;
+            ResultZip.OrderIndex = propertyOrderIndex++;
             ResultExcelFile.OrderIndex = propertyOrderIndex++;
             TableCount.OrderIndex = propertyOrderIndex++;
             ErrorMessage.OrderIndex = propertyOrderIndex++;

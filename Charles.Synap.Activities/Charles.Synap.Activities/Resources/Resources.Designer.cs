@@ -196,7 +196,7 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
-        ///   Converted Excel file path과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Converted Excel File Path과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_ExcelFIle_Tip {
             get {
@@ -223,7 +223,7 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
-        ///   Input File Path과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Input Resource과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_InputFIlePath {
             get {
@@ -232,7 +232,7 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
-        ///   Input FIle Path과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Input Resource 과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_InputFIlePath_Tip {
             get {
@@ -295,7 +295,7 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
-        ///   Synap DA Result zip file 과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Synap DA Result Zipfile resource과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_ResultZipFIle {
             get {

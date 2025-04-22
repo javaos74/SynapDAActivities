@@ -10,6 +10,9 @@ using System.Globalization;
 using System.IO;
 using System.Activities;
 using System.Net.Sockets;
+using UiPath.Platform.ResourceHandling;
+using UiPath.Platform.ResourceHandling.Internals;
+using System.IO.Abstractions;
 
 namespace Charles.Synap.Activities
 {
@@ -94,6 +97,28 @@ namespace Charles.Synap.Activities
             //this.client.DefaultRequestHeaders.Add("User-Agent", "dotnet/1.0.0");
         }
 
+        public async void AddFileResource(IResource file, string fieldName = "file")
+        {
+            var freader = file.GetReaderOrLocal();
+            var fstream = await freader.OpenStreamAsync();
+#if DEBUG
+            Console.WriteLine($"file size: {file.GetSizeInBytes()}");
+#endif
+            byte[] buf = new byte[file.GetSizeInBytes()];
+            int read_bytes = 0;
+            int offset = 0;
+            int remains = (int)buf.Length;
+            do
+            {
+                read_bytes += fstream.Read(buf, offset, remains);
+                offset += read_bytes;
+                remains -= read_bytes;
+            } while (remains > 0);
+            freader.Dispose();
+
+            this.content.Add(new StreamContent(new MemoryStream(buf)), fieldName, System.IO.Path.GetFileName( file.FullName));
+        }
+
         public void AddFile(string fileName, string fieldName = "file")
         {
             var fstream = System.IO.File.OpenRead(fileName);
@@ -109,7 +134,7 @@ namespace Charles.Synap.Activities
                 read_bytes += fstream.Read(buf, offset, remains);
                 offset += read_bytes;
                 remains -= read_bytes;
-            } while (remains != 0);
+            } while (remains > 0);
             fstream.Close();
 
             this.content.Add(new StreamContent(new MemoryStream(buf)), fieldName, System.IO.Path.GetFileName(fileName));

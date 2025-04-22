@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using OfficeOpenXml;
+using UiPath.Platform.ResourceHandling;
+using UiPath.Platform.ResourceHandling.Internals;
 
 namespace Charles.Synap.Activities
 {
-    public class SynapDAConvertResultToExcel : AsyncCodeActivity
+    public class SynapDAConvertResultToExcel : CodeActivity
     {
-        public InArgument<string> ResultZipFIle { get; set; }
+        public InArgument<IResource> ResultZip { get; set; }
         public InArgument<string> ResultExcelFile { get; set; }
         public OutArgument<int> TableCount { get; set; }
         public OutArgument<string> ErrorMessage { get; set; }
@@ -26,7 +28,7 @@ namespace Charles.Synap.Activities
         {
             tableIndex = 0;
         }
-        private int ConvertXmlTablesToExcel(string zipFilePath, string excelFilePath)
+        private int ConvertXmlTablesToExcel(IResource zipFile, string excelFilePath)
         {
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage.License.SetNonCommercialPersonal("Charles Kim");
@@ -38,15 +40,16 @@ namespace Charles.Synap.Activities
                 string uniqueDirectoryName = Guid.NewGuid().ToString();
                 string tempDirectoryPath = Path.Combine(tempRoot, uniqueDirectoryName);
 
-                using (FileStream fileStream = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //using (FileStream fileStream = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (Stream fileStream = zipFile.GetReaderOrLocal().OpenStreamAsync().Result)
                 {
                     using (archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
                         // 압축 파일 내에서 확장자가 ".xml"인 파일들을 필터링합니다.
                         var xmlFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
-                                                      .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase);
+                                                      .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase);  
 #if DEBUG
-                        Console.WriteLine($"압축 파일 '{zipFilePath}'에서 XML 파일 추출 시작...");
+                        Console.WriteLine($"압축 파일 '{zipFile.FullName}'에서 XML 파일 추출 시작...");
 #endif
 
                         foreach (ZipArchiveEntry entry in xmlFiles)
@@ -86,7 +89,7 @@ namespace Charles.Synap.Activities
                                         {
                                             // td/th 아래의 모든 p 태그 안의 span 값들을 줄바꿈으로 연결
                                             string cellValue = string.Join("\n", cell.Descendants("p").Select(p => p.Descendants("span").Select(s => s.Value.Trim()).FirstOrDefault() ?? "").Where(s => !string.IsNullOrEmpty(s)));
-                                            if (worksheet.Cells[row, col].Merge) // rowspan merge
+                                            while (worksheet.Cells[row, col].Merge) // rowspan merge
                                             {
                                                 col++;
                                             }
@@ -132,6 +135,7 @@ namespace Charles.Synap.Activities
             return tableIndex;
         }
 
+        /*
         protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
         {
             var zipfile = ResultZipFIle.Get(context);
@@ -158,8 +162,25 @@ namespace Charles.Synap.Activities
             }
             else
             {
-                ErrorMessage.Set(context, "Error in SynapDARequest");
+                ErrorMessage.Set(context, "Error in SynapDAConvertResultToExcel");
                 TableCount.Set(context, 0);
+            }
+        } */
+
+        protected override void Execute(CodeActivityContext context)
+        {
+            var zipfile = ResultZip.Get(context);
+            var excelfile = ResultExcelFile.Get(context);
+
+            if( ConvertXmlTablesToExcel(zipfile, excelfile) >= 0)
+            {
+                TableCount.Set(context, tableIndex );
+                ErrorMessage.Set(context, string.Empty);
+            }
+            else
+            {
+                ErrorMessage.Set(context, "Error in SynapDAConvertResultToExcel");
+                TableCount.Set(context, 0); 
             }
         }
     }

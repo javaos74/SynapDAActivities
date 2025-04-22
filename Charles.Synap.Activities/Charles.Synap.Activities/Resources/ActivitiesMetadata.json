@@ -32,7 +32,7 @@
           }
         },
         {
-          "Name": "InputFilePath",
+          "Name": "InputFile",
           "DisplayNameKey": "Synap_InputFIlePath",
           "TooltipKey": "Synap_InputFilePath_Tip",
           "IsRequired": true,
@@ -142,7 +142,7 @@
       "categoryKey": "DocumentParser",
       "Properties": [
         {
-          "Name": "ResultZipFIle",
+          "Name": "ResultZip",
           "DisplayNameKey": "Synap_ResultZipFIle",
           "TooltipKey": "Synap_ResultZipFile_Tip",
           "IsRequired": true,
@@ -197,7 +197,7 @@
       "categoryKey": "DocumentParser",
       "Properties": [
         {
-          "Name": "ResultZipFIle",
+          "Name": "ResultZip",
           "DisplayNameKey": "Synap_ResultZipFIle",
           "TooltipKey": "Synap_ResultZipFile_Tip",
           "IsRequired": true,

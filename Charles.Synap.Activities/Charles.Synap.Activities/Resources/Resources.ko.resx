@@ -150,11 +150,11 @@
     <comment>Used to retrieve result </comment>
   </data>
   <data name="Synap_InputFIlePath" xml:space="preserve">
-    <value>분석 요청 대상 파일</value>
+    <value>분석 요청 대상 파일/리소스</value>
     <comment>Input File Path</comment>
   </data>
   <data name="Synap_InputFIlePath_Tip" xml:space="preserve">
-    <value>분석 요청 대상 파일( PDF, Word, Excel, 이미지 파일 지원)</value>
+    <value>분석 요청 대상 파일/리소스  PDF, Word, Excel, 이미지 파일 지원)</value>
     <comment>Input FIle Path</comment>
   </data>
   <data name="Synap_OutputZipFilePath" xml:space="preserve">
@@ -194,11 +194,11 @@
     <comment>Converted Excel file path</comment>
   </data>
   <data name="Synap_ResultZipFIle" xml:space="preserve">
-    <value>분석 결과 파일 </value>
+    <value>분석 결과 압축파일/리소스</value>
     <comment>Synap DA Result zip file </comment>
   </data>
   <data name="Synap_ResultZipFile_Tip" xml:space="preserve">
-    <value>분석 결과 파일 </value>
+    <value>분석 결과 압축파일/리소스</value>
     <comment>Synap DA Result zip file contains all results ( md, xml, json)</comment>
   </data>
   <data name="Input" xml:space="preserve">
@@ -211,7 +211,7 @@
     <value>로그인</value>
   </data>
   <data name="Synap_DA_Convert_Excel" xml:space="preserve">
-    <value>사이냅소프트 DA 테이블 엑셀로 전환</value>
+    <value>사이냅소프트 DA 테이블 엑셀로 변환</value>
     <comment>Synap Convert Table To Excel</comment>
   </data>
   <data name="Synap_DA_Convert_Markdown" xml:space="preserve">

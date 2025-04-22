@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UiPath.Platform.ResourceHandling;
 
 namespace Charles.Synap.Activities.ViewModels
 {
     public class SynapDAConvertToMarkdownViewModel : DesignPropertiesViewModel
     {
-        public DesignInArgument<string> ResultZipFIle { get; set; }
+        public DesignInArgument<IResource> ResultZip { get; set; }
         public DesignOutArgument<int> PageCount { get; set; }
         public DesignOutArgument<string> ErrorMessage { get; set; }
         public DesignOutArgument<string> MarkdownBody { get; set; }
@@ -28,7 +29,7 @@ namespace Charles.Synap.Activities.ViewModels
             PersistValuesChangedDuringInit(); // mandatory call only when you change the values of properties during initialization
             int propertyOrderIndex = 1;
 
-            ResultZipFIle.OrderIndex = propertyOrderIndex++;
+            ResultZip.OrderIndex = propertyOrderIndex++;
             MarkdownBody.OrderIndex = propertyOrderIndex++;
             PageCount.OrderIndex = propertyOrderIndex++;
             ErrorMessage.OrderIndex = propertyOrderIndex++;

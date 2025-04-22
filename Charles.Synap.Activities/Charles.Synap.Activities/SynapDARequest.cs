@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using UiPath.Platform.ResourceHandling;
 
 
 namespace Charles.Synap.Activities
@@ -19,7 +21,7 @@ namespace Charles.Synap.Activities
         public InArgument<string> ApiKey { get; set; }
 
         [Category("Input")]
-        public InArgument<string> InputFilePath { get; set; }
+        public InArgument<IResource> InputFile { get; set; }
 
 
         [Category("Output")]
@@ -51,12 +53,12 @@ namespace Charles.Synap.Activities
         /*
          * The returned value will be used to set the value of the Result argument
          */
-        private async void Execute( string endpoint, string apikey, string filepath)
+        private async void Execute( string endpoint, string apikey, IResource fileresource)
         {
             SynapDAResponse _result;
 
             _httpClient.setEndpoint(endpoint);
-            _httpClient.AddFile(filepath, "file");
+            _httpClient.AddFileResource(fileresource, "file");
             _httpClient.AddField("type", "upload");
             _httpClient.AddField("api_key", apikey);
 
@@ -90,9 +92,9 @@ namespace Charles.Synap.Activities
         {
             var apikey = ApiKey.Get(context);
             var endpoint = Endpoint.Get(context);   
-            var filepath = InputFilePath.Get(context);
+            var fileresource = InputFile.Get(context);
 
-            var task = new Task(_ => Execute( endpoint, apikey, filepath), state);
+            var task = new Task(_ => Execute( endpoint, apikey, fileresource), state);
             task.Start();
             if (callback != null)
             {
@@ -108,7 +110,7 @@ namespace Charles.Synap.Activities
 
             if(task.IsCompletedSuccessfully)
             {
-                ErrorMessage.Set(context, errorMessage);
+                ErrorMessage.Set(context, string.Empty);
                 FID.Set(context, fid);
                 Status.Set(context, status);
             }

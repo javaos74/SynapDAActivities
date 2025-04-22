@@ -150,11 +150,11 @@
     <comment>Used to retrieve result </comment>
   </data>
   <data name="Synap_InputFIlePath" xml:space="preserve">
-    <value>Input File Path</value>
+    <value>Input Resource</value>
     <comment>Input File Path</comment>
   </data>
   <data name="Synap_InputFIlePath_Tip" xml:space="preserve">
-    <value>Input FIle Path</value>
+    <value>Input Resource </value>
     <comment>Input FIle Path</comment>
   </data>
   <data name="Synap_OutputZipFilePath" xml:space="preserve">
@@ -190,11 +190,11 @@
     <comment>Excel FIle Path</comment>
   </data>
   <data name="Synap_ExcelFIle_Tip" xml:space="preserve">
-    <value>Converted Excel file path</value>
+    <value>Converted Excel File Path</value>
     <comment>Converted Excel file path</comment>
   </data>
   <data name="Synap_ResultZipFIle" xml:space="preserve">
-    <value>Synap DA Result zip file </value>
+    <value>Synap DA Result Zipfile resource</value>
     <comment>Synap DA Result zip file </comment>
   </data>
   <data name="Synap_ResultZipFile_Tip" xml:space="preserve">

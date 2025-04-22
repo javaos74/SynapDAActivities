@@ -8,12 +8,14 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using UiPath.Platform.ResourceHandling;
+using UiPath.Platform.ResourceHandling.Internals;
 
 namespace Charles.Synap.Activities
 {
-    public class SynapDAConvertToMarkdown : AsyncCodeActivity
+    public class SynapDAConvertToMarkdown : CodeActivity
     {
-        public InArgument<string> ResultZipFIle { get; set; }
+        public InArgument<IResource> ResultZip { get; set; }
         public OutArgument<int> PageCount { get; set; }
         public OutArgument<string> ErrorMessage { get; set; }
         public OutArgument<string> MarkdownBody { get; set; }
@@ -25,7 +27,7 @@ namespace Charles.Synap.Activities
             // Constructor logic can be added here if needed
         }
 
-        private int MergeAllPageIntoMarkdown(string zipFilePath)
+        private int MergeAllPageIntoMarkdown(IResource  zipFile)
         {
             StringBuilder _mdbodybuffer = new StringBuilder();
             pageCount = 0;
@@ -35,8 +37,9 @@ namespace Charles.Synap.Activities
                 string tempRoot = Path.GetTempPath();
                 string uniqueDirectoryName = Guid.NewGuid().ToString();
                 string tempDirectoryPath = Path.Combine(tempRoot, uniqueDirectoryName);
-
-                using (FileStream fileStream = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //var fstream = zipFile.GetReaderOrLocal().OpenStreamAsync().Result;
+                //using (FileStream fileStream = new FileStream(fstream, FileMode.Open, FileAccess.Read))
+                using( Stream fileStream = zipFile.GetReaderOrLocal().OpenStreamAsync().Result) 
                 {
                     using (archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
@@ -44,7 +47,7 @@ namespace Charles.Synap.Activities
                         var mdFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                                                      .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase);
 #if DEBUG
-                        Console.WriteLine($"압축 파일 '{zipFilePath}'에서 MD 파일 추출 시작...");
+                        Console.WriteLine($"압축 파일 '{zipFile.FullName}'에서 MD 파일 추출 시작...");
 #endif
 
                         foreach (ZipArchiveEntry entry in mdFiles)
@@ -88,6 +91,7 @@ namespace Charles.Synap.Activities
             return pageCount; // Return the number of pages converted
         }
 
+        /*
         protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
         {
             var zipfile = ResultZipFIle.Get(context);
@@ -115,6 +119,23 @@ namespace Charles.Synap.Activities
             else
             {
                 ErrorMessage.Set(context, "Error in SynapDARequest");
+                PageCount.Set(context, -1);
+                MarkdownBody.Set(context, string.Empty); // Set the output to empty in case of error
+            }
+        }
+        */
+        protected override void Execute(CodeActivityContext context)
+        {
+            var zipfile = ResultZip.Get(context);
+            if( MergeAllPageIntoMarkdown(zipfile) > 0)
+            {
+                PageCount.Set(context, pageCount);
+                ErrorMessage.Set(context, string.Empty);
+                MarkdownBody.Set(context, mdbody); // Set the merged markdown content to the output argument
+            }
+            else
+            {
+                ErrorMessage.Set(context, "Error in SynapDAConvertToMarkdown");
                 PageCount.Set(context, -1);
                 MarkdownBody.Set(context, string.Empty); // Set the output to empty in case of error
             }

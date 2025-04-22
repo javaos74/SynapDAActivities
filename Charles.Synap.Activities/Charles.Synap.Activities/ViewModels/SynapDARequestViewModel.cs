@@ -1,5 +1,6 @@
 ﻿using System.Activities;
 using System.Activities.DesignViewModels;
+using UiPath.Platform.ResourceHandling;
 
 namespace Charles.Synap.Activities.ViewModels
 {
@@ -10,7 +11,7 @@ namespace Charles.Synap.Activities.ViewModels
          */
         public DesignInArgument<string> Endpoint { get; set; }
         public DesignInArgument<string> ApiKey { get; set; }
-        public DesignInArgument<string> InputFilePath { get; set; }
+        public DesignInArgument<IResource> InputFile { get; set; }
         public DesignOutArgument<string> FID { get; set; }
         public DesignOutArgument<string> ErrorMessage { get; set; }
         public DesignOutArgument<int> Status { get; set; }
@@ -31,7 +32,7 @@ namespace Charles.Synap.Activities.ViewModels
 
             Endpoint.OrderIndex = propertyOrderIndex++;
             ApiKey.OrderIndex = propertyOrderIndex++;
-            InputFilePath.OrderIndex = propertyOrderIndex++;
+            InputFile.OrderIndex = propertyOrderIndex++;
             FID.OrderIndex = propertyOrderIndex++;
             Status.OrderIndex = propertyOrderIndex++;
             ErrorMessage.OrderIndex = propertyOrderIndex++;
