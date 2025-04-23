@@ -37,8 +37,7 @@ namespace Charles.Synap.Activities
                 string tempRoot = Path.GetTempPath();
                 string uniqueDirectoryName = Guid.NewGuid().ToString();
                 string tempDirectoryPath = Path.Combine(tempRoot, uniqueDirectoryName);
-                //var fstream = zipFile.GetReaderOrLocal().OpenStreamAsync().Result;
-                //using (FileStream fileStream = new FileStream(fstream, FileMode.Open, FileAccess.Read))
+
                 using( Stream fileStream = zipFile.GetReaderOrLocal().OpenStreamAsync().Result) 
                 {
                     using (archive = new ZipArchive(fileStream, ZipArchiveMode.Read))

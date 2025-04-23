@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using OfficeOpenXml;
@@ -22,14 +25,17 @@ namespace Charles.Synap.Activities
         public OutArgument<int> TableCount { get; set; }
         public OutArgument<string> ErrorMessage { get; set; }
 
-        private int tableIndex; 
+        private int tableCount; 
 
         public SynapDAConvertResultToExcel()
         {
-            tableIndex = 0;
+            tableCount = 0;
         }
         private int ConvertXmlTablesToExcel(IResource zipFile, string excelFilePath)
         {
+#if DEBUG
+            //Debugger.Launch();
+#endif
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage.License.SetNonCommercialPersonal("Charles Kim");
             ZipArchive archive = null;
@@ -46,12 +52,13 @@ namespace Charles.Synap.Activities
                     using (archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
                         // 압축 파일 내에서 확장자가 ".xml"인 파일들을 필터링합니다.
-                        var xmlFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                        var xmlFiles = archive.Entries.Where(entry => entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) 
+                                                                        && !entry.FullName.EndsWith("docinfo.xml", StringComparison.OrdinalIgnoreCase) )
                                                       .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase);  
 #if DEBUG
                         Console.WriteLine($"압축 파일 '{zipFile.FullName}'에서 XML 파일 추출 시작...");
 #endif
-
+                        int pageIdx = -1;
                         foreach (ZipArchiveEntry entry in xmlFiles)
                         {
                             string extractedFilePath = Path.Combine(tempDirectoryPath, entry.FullName);
@@ -66,18 +73,28 @@ namespace Charles.Synap.Activities
                             Console.WriteLine($"  '{entry.FullName}' 추출 중...");
 #endif
                             entry.ExtractToFile(extractedFilePath, true); // true: 이미 파일이 존재하면 덮어쓰기
+                            Match match = Regex.Match(entry.Name, @"_(\d{4})\.xml$");
+                            if (match.Success)
+                            {
+                                // 그룹 1은 캡처된 네자리 숫자 문자열입니다.
+                                string pageNumberString = match.Groups[1].Value;
+                                // 문자열을 정수형으로 변환합니다.
+                                if (!int.TryParse(pageNumberString, out pageIdx))
+                                    pageIdx = -1;
+                            }
                             using (var package = new ExcelPackage(excelFile))
                             {
                                 XDocument doc = XDocument.Load(extractedFilePath);
                                 var tables = doc.Descendants("table");
+                                var tabIdx = 1;
 
                                 foreach (var table in tables)
                                 {
-                                    if (package.Workbook.Worksheets.Any(ws => ws.Name == $"tab{tableIndex}")) //exact matching
+                                    if (package.Workbook.Worksheets.Any(ws => ws.Name == $"page{pageIdx}-tab{tabIdx}")) //exact matching
                                     {
-                                        package.Workbook.Worksheets.Delete($"tab{tableIndex}"); // 중복된 시트 이름이 있을 경우 삭제
+                                        package.Workbook.Worksheets.Delete($"page{pageIdx}-tab{tabIdx}"); // 중복된 시트 이름이 있을 경우 삭제
                                     }
-                                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"tab{tableIndex}");
+                                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"page{pageIdx}-tab{tabIdx}");
                                     int row = 1;
 
                                     var rows = table.Descendants("tr");
@@ -88,12 +105,13 @@ namespace Charles.Synap.Activities
                                         foreach (var cell in cells)
                                         {
                                             // td/th 아래의 모든 p 태그 안의 span 값들을 줄바꿈으로 연결
-                                            string cellValue = string.Join("\n", cell.Descendants("p").Select(p => p.Descendants("span").Select(s => s.Value.Trim()).FirstOrDefault() ?? "").Where(s => !string.IsNullOrEmpty(s)));
+                                            //string cellValue = string.Join("\n", cell.Descendants("p").Select(p => p.Descendants("span").Select(s => s.Value.Trim()).FirstOrDefault() ?? "").Where(s => !string.IsNullOrEmpty(s)));
+                                            string cellValue = string.Join("\n", cell.Descendants("p").Descendants("span").Select(s => s.Value));
                                             while (worksheet.Cells[row, col].Merge) // rowspan merge
                                             {
                                                 col++;
                                             }
-                                            worksheet.Cells[row, col].Value = cellValue;
+                                            worksheet.Cells[row, col].Value = cellValue ?? string.Empty;
 
                                             var colspanAttr = cell.Attribute("colspan");
                                             if (colspanAttr != null && int.TryParse(colspanAttr.Value, out int colspan))
@@ -110,7 +128,8 @@ namespace Charles.Synap.Activities
                                         }
                                         row++;
                                     }
-                                    tableIndex++;
+                                    tableCount++;
+                                    tabIdx++;
                                 }
 #if DEBUG
                                 Console.WriteLine($"  '{entry.FullName}' 추출 & 엑셀 table 변환 완료: '{extractedFilePath}'");
@@ -127,12 +146,12 @@ namespace Charles.Synap.Activities
             catch (Exception ex)
             {
                 Console.WriteLine($"오류 발생: {ex.Message}");
-                tableIndex = -1;
+                tableCount = -1;
                 if(archive != null)
                     archive.Dispose();  
             }
             
-            return tableIndex;
+            return tableCount;
         }
 
         /*
@@ -157,7 +176,7 @@ namespace Charles.Synap.Activities
 
             if (task.IsCompletedSuccessfully)
             {
-                TableCount.Set(context, tableIndex-1);
+                TableCount.Set(context, tableCount-1);
                 ErrorMessage.Set(context, string.Empty);
             }
             else
@@ -174,7 +193,7 @@ namespace Charles.Synap.Activities
 
             if( ConvertXmlTablesToExcel(zipfile, excelfile) >= 0)
             {
-                TableCount.Set(context, tableIndex );
+                TableCount.Set(context, tableCount );
                 ErrorMessage.Set(context, string.Empty);
             }
             else

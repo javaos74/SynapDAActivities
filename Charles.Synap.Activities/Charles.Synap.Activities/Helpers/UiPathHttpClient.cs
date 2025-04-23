@@ -211,13 +211,13 @@ namespace Charles.Synap.Activities
             }
         }
 
-        public async Task<SynapZipResponse> GetDAZipResult(string path, string filepath)
+        public SynapZipResponse GetDAZipResult(string path, string filepath)
         {
 #if DEBUG
             Console.WriteLine("http content count :" + this.content.Count());
 #endif
             SynapZipResponse resp = new SynapZipResponse();
-            using (var message = await this.client.PostAsync(this.url + path, this.content))
+            using (var message = this.client.PostAsync(this.url + path, this.content).Result)
             {
                 resp.status = message.StatusCode;
                 if(resp.status == HttpStatusCode.OK)
@@ -231,15 +231,15 @@ namespace Charles.Synap.Activities
 #if DEBUG
                             Console.WriteLine($"Filename: {fileName}");
 #endif
-                            using var stream = await message.Content.ReadAsStreamAsync();
-                            resp.filePath = filepath; //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", fileName);
-                            using var fileStream = File.Create(filepath);
-                            await stream.CopyToAsync(fileStream);
+                            using (var stream = message.Content.ReadAsStream()) 
+                            {
+                                resp.filePath = filepath; //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", fileName);
+                                using var fileStream = File.Create(filepath);
+                                stream.CopyTo(fileStream);
+                            }
 #if DEBUG
-                            Console.WriteLine($"File saved to: {filepath}");   
+                            Console.WriteLine($"File saved to: {filepath}");
 #endif
-                            fileStream.Close();
-                            stream.Close();
                         }
                     }
                     else

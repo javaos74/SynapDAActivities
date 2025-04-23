@@ -46,7 +46,7 @@ namespace Charles.Synap.Activities
             // Constructor logic here
             _httpClient = new UiPathHttpClient();
         }   
-  protected  override async void Execute(CodeActivityContext context)
+  protected  override void Execute(CodeActivityContext context)
         {
 #if DEBUG
             //Debugger.Launch();
@@ -62,7 +62,7 @@ namespace Charles.Synap.Activities
 
             try
             {
-                _result = await _httpClient.GetDAZipResult($"/result-all/{fid}", zipfilepath);
+                _result = _httpClient.GetDAZipResult($"/result-all/{fid}", zipfilepath);
             }
             catch (Exception ex)
             {
