@@ -34,7 +34,7 @@ namespace Charles.Synap.Activities
         private int ConvertXmlTablesToExcel(IResource zipFile, string excelFilePath)
         {
 #if DEBUG
-            //Debugger.Launch();
+            Debugger.Launch();
 #endif
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage.License.SetNonCommercialPersonal("Charles Kim");
@@ -96,7 +96,8 @@ namespace Charles.Synap.Activities
                                     }
                                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"page{pageIdx}-tab{tabIdx}");
                                     int row = 1;
-
+                                    // (행, 열) 좌표를 키로 사용하여 이미 채워진 셀을 추적합니다.
+                                    var occupiedCells = new HashSet<(int Row, int Col)>();
                                     var rows = table.Descendants("tr");
                                     foreach (var rowElement in rows)
                                     {
@@ -104,32 +105,53 @@ namespace Charles.Synap.Activities
                                         var cells = rowElement.Descendants("td").Concat(rowElement.Descendants("th"));
                                         foreach (var cell in cells)
                                         {
+                                            /*
                                             // td/th 아래의 모든 p 태그 안의 span 값들을 줄바꿈으로 연결
-                                            //string cellValue = string.Join("\n", cell.Descendants("p").Select(p => p.Descendants("span").Select(s => s.Value.Trim()).FirstOrDefault() ?? "").Where(s => !string.IsNullOrEmpty(s)));
-                                            string cellValue = string.Join("\n", cell.Descendants("p").Descendants("span").Select(s => s.Value));
-                                            while (worksheet.Cells[row, col].Merge) // rowspan merge
+                                            */
+                                            // 1. 현재 행에서 다음으로 데이터를 입력할 수 있는 '빈 셀'의 열(col)을 찾습니다.
+                                            // 이전 row에서 rowspan으로 병합된 셀들을 건너뛰는 역할입니다.
+                                            //while (worksheet.Cells[row, col].Merge)
+                                            //{
+                                            //    col++;
+                                            //}
+
+                                            // 현재 (rowIndex, colIndex)가 이미 rowspan으로 채워져 있다면
+                                            // 비어있는 다음 열로 이동합니다.
+                                            while (occupiedCells.Contains((row, col)))
                                             {
                                                 col++;
                                             }
-                                            worksheet.Cells[row, col].Value = cellValue ?? string.Empty;
+                                            // 2. 셀 값 추출
+                                            string cellValue = string.Join("\n", cell.Descendants("p").Descendants("span").Select(s => s.Value.Trim()));
+                                            worksheet.Cells[row, col].Value = cellValue;
 
-                                            var colspanAttr = cell.Attribute("colspan");
-                                            if (colspanAttr != null && int.TryParse(colspanAttr.Value, out int colspan))
+                                            // 3. rowspan과 colspan 값을 파싱합니다. 속성이 없으면 기본값 1을 사용합니다.
+                                            int rowspan = cell.Attribute("rowspan") != null && int.TryParse(cell.Attribute("rowspan").Value, out int r) ? r : 1;
+                                            int colspan = cell.Attribute("colspan") != null && int.TryParse(cell.Attribute("colspan").Value, out int c) ? c : 1;
+
+                                            // 4. rowspan 또는 colspan이 1보다 클 경우에만 병합을 수행합니다.
+                                            if (rowspan > 1 || colspan > 1)
                                             {
-                                                worksheet.Cells[row, col, row, col + colspan - 1].Merge = true;
-                                                col += colspan - 1;
+                                                worksheet.Cells[row, col, row + rowspan - 1, col + colspan - 1].Merge = true;
                                             }
-                                            var rowspanAttr = cell.Attribute("rowspan");
-                                            if (rowspanAttr != null && int.TryParse(rowspanAttr.Value, out int rowspan))
+                                            // 병합으로 인해 차지하게 될 모든 셀을 'occupied'로 표시합니다.
+                                            for (int rs = 0; rs < rowspan; rs++)
                                             {
-                                                worksheet.Cells[row, col, row + rowspan - 1, col].Merge = true;
+                                                for (int cs = 0; cs < colspan; cs++)
+                                                {
+                                                    occupiedCells.Add((row + rs, col + cs));
+                                                }
                                             }
-                                            col++;
+
+                                            // 5. 현재 셀이 차지한 colspan 만큼 다음 셀의 시작 위치를 이동시킵니다.
+                                            col += colspan;
                                         }
                                         row++;
                                     }
                                     tableCount++;
                                     tabIdx++;
+                                    // 보기 좋게 열 너비를 자동 조정합니다.
+                                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
                                 }
 #if DEBUG
                                 Console.WriteLine($"  '{entry.FullName}' 추출 & 엑셀 table 변환 완료: '{extractedFilePath}'");

@@ -35,24 +35,46 @@ namespace Charles.Synap.Activities.Helpers
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"tab{tableIndex}");
                     int row = 1;
 
+                    var occupiedCells = new HashSet<(int Row, int Col)>();
                     var rows = table.Descendants("tr");
                     foreach (var rowElement in rows)
                     {
                         int col = 1;
+                        
                         var cells = rowElement.Descendants("td").Concat(rowElement.Descendants("th"));
                         foreach (var cell in cells)
                         {
+
+                            while (occupiedCells.Contains((row, col)))
+                            {
+                                col++;
+                            }
                             // td/th 아래의 모든 p 태그 안의 span 값들을 줄바꿈으로 연결
                             string cellValue = string.Join("\n", cell.Descendants("p").Select(p => p.Descendants("span").Select(s => s.Value.Trim()).FirstOrDefault() ?? "").Where(s => !string.IsNullOrEmpty(s)));
                             worksheet.Cells[row, col].Value = cellValue;
 
-                            var colspanAttr = cell.Attribute("colspan");
-                            if (colspanAttr != null && int.TryParse(colspanAttr.Value, out int colspan))
+                            int rowspan = cell.Attribute("rowspan") != null && int.TryParse(cell.Attribute("rowspan").Value, out int r) ? r : 1;
+                            int colspan = cell.Attribute("colspan") != null && int.TryParse(cell.Attribute("colspan").Value, out int c) ? c : 1;
+
+                            // 4. rowspan 또는 colspan이 1보다 클 경우에만 병합을 수행합니다.
+                            if (rowspan > 1 || colspan > 1)
                             {
-                                worksheet.Cells[row, col, row, col + colspan - 1].Merge = true;
-                                col += colspan - 1;
+                                worksheet.Cells[row, col, row + rowspan - 1, col + colspan - 1].Merge = true;
+#if DEBUG
+                                System.Console.WriteLine($"병합: 시작({row},{col}) -> 끝({row + rowspan - 1},{col + colspan - 1})");
+#endif
                             }
-                            col++;
+                            // 병합으로 인해 차지하게 될 모든 셀을 'occupied'로 표시합니다.
+                            for (int rs = 0; rs < rowspan; rs++)
+                            {
+                                for (int cs = 0; cs < colspan; cs++)
+                                {
+                                    occupiedCells.Add((row + rs, col + cs));
+                                }
+                            }
+
+                            // 5. 현재 셀이 차지한 colspan 만큼 다음 셀의 시작 위치를 이동시킵니다.
+                            col += colspan;
                         }
                         row++;
                     }
