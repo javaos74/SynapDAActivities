@@ -11,7 +11,7 @@ using UiPath.Platform.ResourceHandling;
 
 namespace Charles.Synap.Activities
 {
-    public class SynapDARequest : AsyncCodeActivity // This base class exposes an OutArgument named Result
+    public class SynapDARequest : CodeActivity 
     {
         [Category("Login")]
         public InArgument<string> Endpoint { get; set; }
@@ -50,10 +50,32 @@ namespace Charles.Synap.Activities
             // Constructor logic here
             _httpClient = new UiPathHttpClient();
         }
+
+        protected override void Execute(CodeActivityContext context)
+        {
+            var apikey = ApiKey.Get(context);
+            var endpoint = Endpoint.Get(context);
+            var fileresource = InputFile.Get(context);
+
+            _httpClient.Clear();
+            try
+            {
+                var resp = _Execute(endpoint, apikey, fileresource);
+                ErrorMessage.Set(context, string.Empty);
+                FID.Set(context, fid);
+                Status.Set(context, status);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage.Set(context, ex.Message);
+                Status.Set(context, (int)System.Net.HttpStatusCode.InternalServerError);
+                FID.Set(context, string.Empty);
+            }
+        }
         /*
          * The returned value will be used to set the value of the Result argument
          */
-        private async void Execute( string endpoint, string apikey, IResource fileresource)
+        private SynapDAResponse _Execute( string endpoint, string apikey, IResource fileresource)
         {
             SynapDAResponse _result;
 
@@ -62,7 +84,7 @@ namespace Charles.Synap.Activities
             _httpClient.AddField("type", "upload");
             _httpClient.AddField("api_key", apikey);
 
-            _result = await _httpClient.UploadSynapDA( "/da");
+            _result =  _httpClient.UploadSynapDA( "/da").Result;
 
             if (_result.status == HttpStatusCode.OK)
             {
@@ -85,8 +107,10 @@ namespace Charles.Synap.Activities
                 errorMessage = _result.body;
                 status = (int)_result.status;
             }
+            return _result;
 
         }
+        /*
 
         protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
         {
@@ -94,7 +118,7 @@ namespace Charles.Synap.Activities
             var endpoint = Endpoint.Get(context);   
             var fileresource = InputFile.Get(context);
 
-            var task = new Task(_ => Execute( endpoint, apikey, fileresource), state);
+            var task = new Task(_ => _Execute( endpoint, apikey, fileresource), state);
             task.Start();
             if (callback != null)
             {
@@ -121,5 +145,6 @@ namespace Charles.Synap.Activities
                 Status.Set(context, 0);
             }
         }
+        */
     }
 }

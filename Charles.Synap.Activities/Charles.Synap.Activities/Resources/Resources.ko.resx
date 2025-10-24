@@ -235,4 +235,39 @@
   <data name="Synap_Status_Tip" xml:space="preserve">
     <value>서버 응답 코드 (200 정상 나머지는 오류) </value>
   </data>
+  <data name="Synap_KeepMerge" xml:space="preserve">
+    <value>병합 셀 유지</value>
+  </data>
+  <data name="Synap_KeepMerge_Tip" xml:space="preserve">
+    <value>병합 셀 유지 혹은 병합 셀에 대해서 병합 풀기</value>
+  </data>
+  <data name="Synap_DA_Convert_ExcelToJson" xml:space="preserve">
+    <value>사이냅소프트 DA DataTable을 JSON으로 변환</value>
+    <comment>Synap DA Convert DataTable To JSON</comment>
+  </data>
+  <data name="Synap_InputDataTable" xml:space="preserve">
+    <value>입력 DataTable</value>
+    <comment>Input DataTable</comment>
+  </data>
+  <data name="Synap_InputDataTable_Tip" xml:space="preserve">
+    <value>JSON으로 변환할 입력 DataTable</value>
+    <comment>Input DataTable to convert to JSON</comment>
+  </data>
+  <data name="Synap_OutputJsonFilePath" xml:space="preserve">
+    <value>출력 JSON 파일 경로</value>
+    <comment>Output JSON File Path</comment>
+  </data>
+  <data name="Synap_OutputJsonFilePath_Tip" xml:space="preserve">
+    <value>변환된 JSON이 저장될 파일 경로</value>
+    <comment>File path where the converted JSON will be saved</comment>
+  </data>
+  <data name="Synap_RecordCount" xml:space="preserve">
+    <value>레코드 수</value>
+    <comment>Record Count</comment>
+  </data>
+  <data name="Synap_RecordCount_Tip" xml:space="preserve">
+    <value>JSON으로 변환된 레코드 수</value>
+    <comment>Number of records converted to JSON</comment>
+  </data>
+
 </root>

@@ -242,4 +242,41 @@
     <value>Server status code ( 200 OK otherwise error) </value>
     <comment>Server status code</comment>
   </data>
+  <data name="Synap_KeepMerge" xml:space="preserve">
+    <value>Keep Cell Merged in Table</value>
+    <comment>Keep Cell Merged in Table</comment>
+  </data>
+  <data name="Synap_KeepMerge_Tip" xml:space="preserve">
+    <value>Keep Cell Merged in Table</value>
+    <comment>Keep Cell Merged in Table</comment>
+  </data>
+  <data name="Synap_DA_Convert_ExcelToJson" xml:space="preserve">
+    <value>Synap DA Convert DataTable To JSON</value>
+    <comment>Synap DA Convert DataTable To JSON</comment>
+  </data>
+  <data name="Synap_InputDataTable" xml:space="preserve">
+    <value>Input DataTable</value>
+    <comment>Input DataTable</comment>
+  </data>
+  <data name="Synap_InputDataTable_Tip" xml:space="preserve">
+    <value>Input DataTable to convert to JSON</value>
+    <comment>Input DataTable to convert to JSON</comment>
+  </data>
+  <data name="Synap_OutputJsonFilePath" xml:space="preserve">
+    <value>Output JSON File Path</value>
+    <comment>Output JSON File Path</comment>
+  </data>
+  <data name="Synap_OutputJsonFilePath_Tip" xml:space="preserve">
+    <value>File path where the converted JSON will be saved</value>
+    <comment>File path where the converted JSON will be saved</comment>
+  </data>
+  <data name="Synap_RecordCount" xml:space="preserve">
+    <value>Record Count</value>
+    <comment>Record Count</comment>
+  </data>
+  <data name="Synap_RecordCount_Tip" xml:space="preserve">
+    <value>Number of records converted to JSON</value>
+    <comment>Number of records converted to JSON</comment>
+  </data>
+
 </root>

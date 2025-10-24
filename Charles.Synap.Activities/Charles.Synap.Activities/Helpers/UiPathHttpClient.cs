@@ -151,7 +151,7 @@ namespace Charles.Synap.Activities
             this.content = new MultipartFormDataContent("ocr----" + DateTime.Now.Ticks.ToString());
         }
 
-        public async Task<ClovaResponse> Upload()
+        public async Task<ClovaResponse> UploadClova()
         {
 #if DEBUG
             Console.WriteLine("http content count :" + this.content.Count());

@@ -164,6 +164,17 @@
           }
         },
         {
+          "Name": "KeepMerge",
+          "DisplayNameKey": "Synap_KeepMerge",
+          "TooltipKey": "Synap_KeppMerge_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
           "Name": "TableCount",
           "DisplayNameKey": "Synap_TableCount",
           "TooltipKey": "Synap_TableCount_Tip",
@@ -242,6 +253,61 @@
         }
       ],
       "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAConvertToMarkdownViewModel"
+    },
+    {
+      "fullName": "Charles.Synap.Activities.SynapDAConvertExcelToJson",
+      "shortName": "SynapDA ExcelToJson",
+      "displayNameKey": "Synap_DA_Convert_ExcelToJson",
+      "iconKey": "CI_synasoft.png",
+      "descriptionKey": "ActivityTemplate_Description",
+      "categoryKey": "DocumentParser",
+      "Properties": [
+        {
+          "Name": "InputDataTable",
+          "DisplayNameKey": "Synap_InputDataTable",
+          "TooltipKey": "Synap_InputDataTable_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "OutputJsonFilePath",
+          "DisplayNameKey": "Synap_OutputJsonFilePath",
+          "TooltipKey": "Synap_OutputJsonFilePath_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "RecordCount",
+          "DisplayNameKey": "Synap_RecordCount",
+          "TooltipKey": "Synap_RecordCount_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "ErrorMessage",
+          "DisplayNameKey": "Synap_ErrorMessage",
+          "TooltipKey": "Synap_ErrorMessage_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        }
+      ],
+      "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAConvertExcelToJsonViewModel"
     }
   ]
 }

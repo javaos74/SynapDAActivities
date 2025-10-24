@@ -241,6 +241,24 @@ namespace Charles.Synap.Activities {
         }
         
         /// <summary>
+        ///   Keep Cell Merged in Table과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_KeepMerge {
+            get {
+                return ResourceManager.GetString("Synap_KeepMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Keep Cell Merged in Table과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Synap_KeepMerge_Tip {
+            get {
+                return ResourceManager.GetString("Synap_KeepMerge_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Converted Markdown body과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Synap_Markdown_Body {

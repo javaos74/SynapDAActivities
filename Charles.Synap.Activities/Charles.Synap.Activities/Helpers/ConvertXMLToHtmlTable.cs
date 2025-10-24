@@ -18,7 +18,7 @@ namespace Charles.Synap.Activities.Helpers
             return coordinateAttributes.Contains(attributeName);
         }
 
-        public void ConvertXmlTablesToExcel(string xmlFilePath, string excelFilePath)
+        public void ConvertXmlTablesToExcel(string xmlFilePath, string excelFilePath, Boolean keepMerged = true)
         {
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             
@@ -50,7 +50,7 @@ namespace Charles.Synap.Activities.Helpers
                                 col++;
                             }
                             // td/th 아래의 모든 p 태그 안의 span 값들을 줄바꿈으로 연결
-                            string cellValue = string.Join("\n", cell.Descendants("p").Select(p => p.Descendants("span").Select(s => s.Value.Trim()).FirstOrDefault() ?? "").Where(s => !string.IsNullOrEmpty(s)));
+                            string cellValue = string.Join("\n", cell.Descendants("p").Descendants("span").Select(s => s.Value.Trim()));
                             worksheet.Cells[row, col].Value = cellValue;
 
                             int rowspan = cell.Attribute("rowspan") != null && int.TryParse(cell.Attribute("rowspan").Value, out int r) ? r : 1;
@@ -79,6 +79,55 @@ namespace Charles.Synap.Activities.Helpers
                         row++;
                     }
                     tableIndex++;
+                    if (!keepMerged)
+                    {
+                        // 역순 순회
+                        for (int i = worksheet.MergedCells.Count - 1; i >= 0; i--)
+                        {
+                            string mergedAddress = worksheet.MergedCells[i];
+                            if (string.IsNullOrEmpty(mergedAddress)) continue; // 가끔 주소가 없는 경우 방지
+
+                            var mergedRange = worksheet.Cells[mergedAddress];
+                            var value = mergedRange.Value; // 값 미리 가져오기
+
+                            bool spansMultipleRows = mergedRange.Start.Row != mergedRange.End.Row;
+                            bool spansMultipleCols = mergedRange.Start.Column != mergedRange.End.Column;
+
+                            // 1. 블록 병합(행/열 모두 병합)인 경우 (예: A1:C5)
+                            if (spansMultipleRows && spansMultipleCols)
+                            {
+                                // 범위 정보 저장
+                                int startRow = mergedRange.Start.Row;
+                                int endRow = mergedRange.End.Row;
+                                int startCol = mergedRange.Start.Column;
+                                int endCol = mergedRange.End.Column;
+
+                                // ★ 1. 전체 블록 병합 해제
+                                mergedRange.Merge = false;
+
+                                // ★ 2. 열(Column)별로 루프를 돌며 행 병합 다시 적용
+                                for (int col = startCol; col <= endCol; col++)
+                                {
+                                    // (예: A1:A5, B1:B5, C1:C5 ...)
+                                    var newRowMergeRange = worksheet.Cells[startRow, col, endRow, col];
+
+                                    // ★ 3. 행 병합 다시 실행
+                                    newRowMergeRange.Merge = true;
+
+                                    // ★ 4. 새 병합 영역에 값 설정
+                                    newRowMergeRange.Value = value;
+                                }
+                            }
+                            // 2. "순수한 행 병합"인 경우 (예: A1:A5)
+                            else if (spansMultipleRows && !spansMultipleCols)
+                            {
+                                // (이전 요청사항) 병합을 풀고 모든 셀에 값 채우기
+                                mergedRange.Merge = false;
+                                mergedRange.Value = value;
+                            }
+                            // 3. 순수한 열 병합 (A1:C1) 등은 건너뜀
+                        }
+                    }
                 }
 
                 FileInfo excelFile = new FileInfo(excelFilePath);

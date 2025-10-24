@@ -11,8 +11,8 @@
 		<VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
 		<VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalMinutes.ToString("F0"))</VersionRevision>
 		<PackageId>Synapsoft.DA.Activities</PackageId>
-		<VersionPrefix Condition="'$(Configuration)' == 'Release'">1.0.7</VersionPrefix>
-		<VersionPrefix Condition="'$(Configuration)' == 'Debug'">1.0.6.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
+		<VersionPrefix Condition="'$(Configuration)' == 'Release'">1.0.8</VersionPrefix>
+		<VersionPrefix Condition="'$(Configuration)' == 'Debug'">1.0.7.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
 		<Authors>Charles Kim</Authors>
     <PackageDescription>Synapsoft DA Activities</PackageDescription>
 		<PackageTags>UiPathActivities</PackageTags>
@@ -23,10 +23,7 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="EPPlus" Version="8.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+
   
 	<Target Name="AddDlls">
 		<!-- PDBs for debug-->
@@ -52,10 +49,13 @@
 		</ItemGroup>
 		<Delete Files="@(PackageFilesToDelete)" ContinueOnError="WarnAndContinue" />
 	</Target>
-	
+	<ItemGroup>
+		<PackageReference Include="EPPlus" Version="8.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Charles.Synap.Activities\Charles.Synap.Activities.csproj">
-      <PrivateAssets>All</PrivateAssets>
+			<PrivateAssets>All</PrivateAssets>
 		</ProjectReference>
 	</ItemGroup>
 

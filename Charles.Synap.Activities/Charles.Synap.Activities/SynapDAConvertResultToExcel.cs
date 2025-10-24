@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Abstractions;
 using System.IO.Compression;
@@ -20,8 +21,11 @@ namespace Charles.Synap.Activities
 {
     public class SynapDAConvertResultToExcel : CodeActivity
     {
+        [Category("Input")]
         public InArgument<IResource> ResultZip { get; set; }
         public InArgument<string> ResultExcelFile { get; set; }
+        public InArgument<Boolean> KeepMerge { get; set; } = true;
+        [Category("Output")]
         public OutArgument<int> TableCount { get; set; }
         public OutArgument<string> ErrorMessage { get; set; }
 
@@ -31,7 +35,7 @@ namespace Charles.Synap.Activities
         {
             tableCount = 0;
         }
-        private int ConvertXmlTablesToExcel(IResource zipFile, string excelFilePath)
+        private int ConvertXmlTablesToExcel(IResource zipFile, string excelFilePath, Boolean keepMerged)
         {
 #if DEBUG
             Debugger.Launch();
@@ -150,6 +154,7 @@ namespace Charles.Synap.Activities
                                     }
                                     tableCount++;
                                     tabIdx++;
+
                                     // 보기 좋게 열 너비를 자동 조정합니다.
                                     worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
                                 }
@@ -164,6 +169,78 @@ namespace Charles.Synap.Activities
                     }
                     Directory.Delete(tempDirectoryPath, true); // 변환 후 임시 디렉토리 삭제
                 }
+                if( !keepMerged)
+                {
+                    try
+                    {
+                        string filepath = excelFile.FullName;
+                        excelFile.MoveTo(Path.GetTempPath());
+                        FileInfo outputFile = new FileInfo(filepath);
+
+                        using (var package = new ExcelPackage(excelFile))
+                        {
+                            foreach (var worksheet in package.Workbook.Worksheets)
+                            {
+                                // 역순 순회
+                                for (int i = worksheet.MergedCells.Count - 1; i >= 0; i--)
+                                {
+                                    string mergedAddress = worksheet.MergedCells[i];
+                                    if (string.IsNullOrEmpty(mergedAddress)) continue; // 가끔 주소가 없는 경우 방지
+                                    var mergedRange = worksheet.Cells[mergedAddress];
+                                    var value = mergedRange.Text; // 값 미리 가져오기
+
+                                    bool spansMultipleRows = mergedRange.Start.Row != mergedRange.End.Row;
+                                    bool spansMultipleCols = mergedRange.Start.Column != mergedRange.End.Column;
+
+                                    // 1. 블록 병합(행/열 모두 병합)인 경우 (예: A1:C5)
+                                    if (spansMultipleRows && spansMultipleCols)
+                                    {
+                                        // 범위 정보 저장
+                                        int startRow = mergedRange.Start.Row;
+                                        int endRow = mergedRange.End.Row;
+                                        int startCol = mergedRange.Start.Column;
+                                        int endCol = mergedRange.End.Column;
+
+                                        // ★ 1. 전체 블록 병합 해제
+                                        mergedRange.Merge = false;
+
+                                        // ★ 2. 행(Row)별로 루프를 돌며 열 병합 다시 적용
+                                        for (int row = startRow; row <= endRow; row++)
+                                        {
+                                            // (예: A1:A5, B1:B5, C1:C5 ...)
+                                            var newRowMergeRange = worksheet.Cells[row, startCol, row, endCol];
+                                            // ★ 3. 열 병합 다시 실행
+                                            newRowMergeRange.Merge = true;
+                                            // ★ 4. 새 병합 영역에 값 설정
+                                            newRowMergeRange.Value = value.ToString();
+#if DEBUG
+                                            Console.WriteLine($"새 행 병합 적용: {newRowMergeRange.Address} with {value.ToString()}");
+#endif
+                                        }
+                                    }
+                                    // 2. "순수한 행 병합"인 경우 (예: A1:A5)
+                                    else if (spansMultipleRows && !spansMultipleCols)
+                                    {
+                                        // (이전 요청사항) 병합을 풀고 모든 셀에 값 채우기
+                                        mergedRange.Merge = false;
+                                        mergedRange.Value = value;
+#if DEBUG
+                                        Console.WriteLine($"병합 셀을 풀고 모든 셀에 값을 채웁니다: {mergedAddress} with {value.ToString()}");
+#endif
+                                    }
+                                    // 3. 순수한 열 병합 (A1:C1) 등은 건너뜀
+                                }
+                            }
+
+                            package.SaveAs(outputFile);
+                            Console.WriteLine($"파일 처리 완료: {outputFile.FullName}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"오류 발생: {ex.Message}");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -176,44 +253,15 @@ namespace Charles.Synap.Activities
             return tableCount;
         }
 
-        /*
-        protected override IAsyncResult BeginExecute(AsyncCodeActivityContext context, AsyncCallback callback, object state)
-        {
-            var zipfile = ResultZipFIle.Get(context);
-            var excelfile = ResultExcelFile.Get(context);
-
-            var task = new Task(_ => ConvertXmlTablesToExcel(zipfile, excelfile), state);
-            task.Start();
-            if (callback != null)
-            {
-                task.ContinueWith(s => callback(s));
-                task.Wait();
-            }
-            return task;
-        }
-
-        protected override void EndExecute(AsyncCodeActivityContext context, IAsyncResult result)
-        {
-            var task = (Task)result;
-
-            if (task.IsCompletedSuccessfully)
-            {
-                TableCount.Set(context, tableCount-1);
-                ErrorMessage.Set(context, string.Empty);
-            }
-            else
-            {
-                ErrorMessage.Set(context, "Error in SynapDAConvertResultToExcel");
-                TableCount.Set(context, 0);
-            }
-        } */
+  
 
         protected override void Execute(CodeActivityContext context)
         {
             var zipfile = ResultZip.Get(context);
             var excelfile = ResultExcelFile.Get(context);
+            var keepMerged = KeepMerge.Get(context);
 
-            if( ConvertXmlTablesToExcel(zipfile, excelfile) >= 0)
+            if ( ConvertXmlTablesToExcel(zipfile, excelfile, keepMerged) >= 0)
             {
                 TableCount.Set(context, tableCount );
                 ErrorMessage.Set(context, string.Empty);
