@@ -308,6 +308,105 @@
         }
       ],
       "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDAConvertExcelToJsonViewModel"
+    },
+    {
+      "fullName": "Charles.Synap.Activities.SynapDACheckFileStatus",
+      "shortName": "SynapDA CheckStatus",
+      "displayNameKey": "Synap_DA_Check_FileStatus",
+      "iconKey": "CI_synasoft.png",
+      "descriptionKey": "ActivityTemplate_Description",
+      "categoryKey": "DocumentParser",
+      "Properties": [
+        {
+          "Name": "Endpoint",
+          "DisplayNameKey": "Synap_Endpoint",
+          "TooltipKey": "Synap_Endpoint_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Login"
+          }
+        },
+        {
+          "Name": "ApiKey",
+          "DisplayNameKey": "Synap_APIKEY",
+          "TooltipKey": "Synap_APIKEY_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Login"
+          }
+        },
+        {
+          "Name": "FID",
+          "DisplayNameKey": "Synap_FID",
+          "TooltipKey": "Synap_FID_Tip",
+          "IsRequired": true,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Input"
+          }
+        },
+        {
+          "Name": "FileStatus",
+          "DisplayNameKey": "Synap_FileStatus",
+          "TooltipKey": "Synap_FileStatus_Tip",
+          "IsRequired": false,
+          "IsPrincipal": true,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "TotalPages",
+          "DisplayNameKey": "Synap_TotalPages",
+          "TooltipKey": "Synap_TotalPages_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "ReturnCode",
+          "DisplayNameKey": "Synap_ReturnCode",
+          "TooltipKey": "Synap_ReturnCode_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "Status",
+          "DisplayNameKey": "Synap_Status",
+          "TooltipKey": "Synap_Status_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        },
+        {
+          "Name": "ErrorMessage",
+          "DisplayNameKey": "Synap_ErrorMessage",
+          "TooltipKey": "Synap_ErrorMessage_Tip",
+          "IsRequired": false,
+          "IsPrincipal": false,
+          "IsVisible": true,
+          "Category": {
+            "DisplayNameKey": "Output"
+          }
+        }
+      ],
+      "viewModelType": "Charles.Synap.Activities.ViewModels.SynapDACheckFileStatusViewModel"
     }
   ]
 }

@@ -11,8 +11,8 @@
 		<VersionBuild>$([System.DateTime]::UtcNow.DayOfYear.ToString("F0"))</VersionBuild>
 		<VersionRevision>$([System.DateTime]::UtcNow.TimeOfDay.TotalMinutes.ToString("F0"))</VersionRevision>
 		<PackageId>Synapsoft.DA.Activities</PackageId>
-		<VersionPrefix Condition="'$(Configuration)' == 'Release'">1.0.8</VersionPrefix>
-		<VersionPrefix Condition="'$(Configuration)' == 'Debug'">1.0.7.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
+		<VersionPrefix Condition="'$(Configuration)' == 'Release'">1.0.9</VersionPrefix>
+		<VersionPrefix Condition="'$(Configuration)' == 'Debug'">1.0.8.$(VersionBuild)-dev.$(VersionRevision)</VersionPrefix>
 		<Authors>Charles Kim</Authors>
     <PackageDescription>Synapsoft DA Activities</PackageDescription>
 		<PackageTags>UiPathActivities</PackageTags>

@@ -199,9 +199,25 @@ namespace Charles.Synap.Activities
         public async Task<SynapDAResponse> GetDAPageResult( string path, string body)
         {
 #if DEBUG
-            Console.WriteLine("http content count :" + this.content.Count());
+            Console.WriteLine("http content :" +  body);
 #endif
-            var _content = new StringContent(body);
+            var _content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            using (var message = this.client.PostAsync(this.url + path, _content))
+            {
+                SynapDAResponse resp = new SynapDAResponse();
+                resp.status = message.Result.StatusCode;
+                resp.body = await message.Result.Content.ReadAsStringAsync();
+                return resp;
+            }
+        }
+
+        public async Task<SynapDAResponse> GetDAFileStatus( string path, string body)
+        {
+            var _content = new StringContent(body, Encoding.UTF8, "application/json");
+#if DEBUG
+            Console.WriteLine("http content :" + body);
+#endif
             using (var message = this.client.PostAsync(this.url + path, _content))
             {
                 SynapDAResponse resp = new SynapDAResponse();

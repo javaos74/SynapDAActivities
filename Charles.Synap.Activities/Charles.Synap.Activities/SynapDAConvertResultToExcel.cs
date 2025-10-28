@@ -23,10 +23,13 @@ namespace Charles.Synap.Activities
     {
         [Category("Input")]
         public InArgument<IResource> ResultZip { get; set; }
+        [Category("Input")]
         public InArgument<string> ResultExcelFile { get; set; }
+        [Category("Input")]
         public InArgument<Boolean> KeepMerge { get; set; } = true;
         [Category("Output")]
         public OutArgument<int> TableCount { get; set; }
+        [Category("Output")]
         public OutArgument<string> ErrorMessage { get; set; }
 
         private int tableCount; 
@@ -38,7 +41,7 @@ namespace Charles.Synap.Activities
         private int ConvertXmlTablesToExcel(IResource zipFile, string excelFilePath, Boolean keepMerged)
         {
 #if DEBUG
-            Debugger.Launch();
+            //Debugger.Launch();
 #endif
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage.License.SetNonCommercialPersonal("Charles Kim");

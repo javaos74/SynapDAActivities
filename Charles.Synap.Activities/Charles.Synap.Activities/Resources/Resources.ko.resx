@@ -269,5 +269,33 @@
     <value>JSON으로 변환된 레코드 수</value>
     <comment>Number of records converted to JSON</comment>
   </data>
+  <data name="Synap_DA_Check_FileStatus" xml:space="preserve">
+    <value>사이냅소프트 DA 파일 상태 확인</value>
+    <comment>Synap DA Check File Status</comment>
+  </data>
+  <data name="Synap_FileStatus" xml:space="preserve">
+    <value>파일 상태</value>
+    <comment>File Status</comment>
+  </data>
+  <data name="Synap_FileStatus_Tip" xml:space="preserve">
+    <value>현재 파일 처리 상태 (LOADING, RUNNING, SUCCESS, FAILED)</value>
+    <comment>Current file processing status (LOADING, RUNNING, SUCCESS, FAILED)</comment>
+  </data>
+  <data name="Synap_TotalPages" xml:space="preserve">
+    <value>총 페이지 수</value>
+    <comment>Total Pages</comment>
+  </data>
+  <data name="Synap_TotalPages_Tip" xml:space="preserve">
+    <value>문서의 총 페이지 수 (LOADING 상태가 아닐 때 제공됨)</value>
+    <comment>Total number of pages in the document (available when status is not LOADING)</comment>
+  </data>
+  <data name="Synap_ReturnCode" xml:space="preserve">
+    <value>반환 코드</value>
+    <comment>Return Code</comment>
+  </data>
+  <data name="Synap_ReturnCode_Tip" xml:space="preserve">
+    <value>처리 결과 반환 코드 (SUCCESS 및 FAILED 상태에서 제공됨)</value>
+    <comment>Processing return code (available for SUCCESS and FAILED status)</comment>
+  </data>
 
 </root>

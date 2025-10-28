@@ -15,6 +15,7 @@ namespace Charles.Synap.Activities.ViewModels
     {
         public DesignInArgument<IResource> ResultZip { get; set; }
         public DesignInArgument<string> ResultExcelFile { get; set; }
+        public DesignInArgument<Boolean> KeepMerge { get; set; }
         public DesignOutArgument<int> TableCount { get; set; }
         public DesignOutArgument<string> ErrorMessage { get; set; }
 
@@ -34,6 +35,7 @@ namespace Charles.Synap.Activities.ViewModels
 
             ResultZip.OrderIndex = propertyOrderIndex++;
             ResultExcelFile.OrderIndex = propertyOrderIndex++;
+            KeepMerge.OrderIndex = propertyOrderIndex++;    
             TableCount.OrderIndex = propertyOrderIndex++;
             ErrorMessage.OrderIndex = propertyOrderIndex++;
         }

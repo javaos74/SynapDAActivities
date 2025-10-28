@@ -278,5 +278,33 @@
     <value>Number of records converted to JSON</value>
     <comment>Number of records converted to JSON</comment>
   </data>
+  <data name="Synap_DA_Check_FileStatus" xml:space="preserve">
+    <value>Synap DA Check File Status</value>
+    <comment>Synap DA Check File Status</comment>
+  </data>
+  <data name="Synap_FileStatus" xml:space="preserve">
+    <value>File Status</value>
+    <comment>File Status</comment>
+  </data>
+  <data name="Synap_FileStatus_Tip" xml:space="preserve">
+    <value>Current file processing status (LOADING, RUNNING, SUCCESS, FAILED)</value>
+    <comment>Current file processing status (LOADING, RUNNING, SUCCESS, FAILED)</comment>
+  </data>
+  <data name="Synap_TotalPages" xml:space="preserve">
+    <value>Total Pages</value>
+    <comment>Total Pages</comment>
+  </data>
+  <data name="Synap_TotalPages_Tip" xml:space="preserve">
+    <value>Total number of pages in the document (available when status is not LOADING)</value>
+    <comment>Total number of pages in the document (available when status is not LOADING)</comment>
+  </data>
+  <data name="Synap_ReturnCode" xml:space="preserve">
+    <value>Return Code</value>
+    <comment>Return Code</comment>
+  </data>
+  <data name="Synap_ReturnCode_Tip" xml:space="preserve">
+    <value>Processing return code (available for SUCCESS and FAILED status)</value>
+    <comment>Processing return code (available for SUCCESS and FAILED status)</comment>
+  </data>
 
 </root>
