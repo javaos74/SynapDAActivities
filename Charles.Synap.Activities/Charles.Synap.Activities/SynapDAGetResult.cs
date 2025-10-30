@@ -46,7 +46,8 @@ namespace Charles.Synap.Activities
             // Constructor logic here
             _httpClient = new UiPathHttpClient();
         }   
-  protected  override void Execute(CodeActivityContext context)
+
+        protected  override void Execute(CodeActivityContext context)
         {
 #if DEBUG
             //Debugger.Launch();
@@ -63,11 +64,13 @@ namespace Charles.Synap.Activities
             try
             {
                 _result = _httpClient.GetDAZipResult($"/result-all/{fid}", zipfilepath);
+                _httpClient.Clear(); 
             }
             catch (Exception ex)
             {
                 this.ErrorMessage.Set(context, ex.Message);
                 this.Status.Set(context, (int)System.Net.HttpStatusCode.InternalServerError);
+                _httpClient.Clear();
             }
         }
     }

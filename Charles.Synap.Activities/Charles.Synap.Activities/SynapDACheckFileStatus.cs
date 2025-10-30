@@ -76,7 +76,7 @@ namespace Charles.Synap.Activities
         private SynapDAResponse _Execute(string endpoint, string apikey, string fid)
         {
 #if DEBUG
-            Debugger.Launch();
+            //Debugger.Launch();
 #endif
             SynapDAResponse _result;
 

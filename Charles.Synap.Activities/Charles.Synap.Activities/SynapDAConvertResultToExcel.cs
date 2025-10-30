@@ -274,6 +274,7 @@ namespace Charles.Synap.Activities
                 ErrorMessage.Set(context, "Error in SynapDAConvertResultToExcel");
                 TableCount.Set(context, 0); 
             }
+            
         }
     }
 }
