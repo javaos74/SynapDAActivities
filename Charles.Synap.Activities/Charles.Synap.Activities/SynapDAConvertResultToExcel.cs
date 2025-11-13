@@ -164,7 +164,8 @@ namespace Charles.Synap.Activities
 #if DEBUG
                                 Console.WriteLine($"  '{entry.FullName}' 추출 & 엑셀 table 변환 완료: '{extractedFilePath}'");
 #endif
-                                package.Save();
+                                if(tableCount > 0) // table이 없는 경우 저장하면 오류 발생 
+                                    package.Save();
                             }
                             File.Delete(extractedFilePath); // 변환 후 XML 파일 삭제
 

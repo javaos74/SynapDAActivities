@@ -29,10 +29,10 @@ namespace Charles.Synap.Activities.Helpers
                 XDocument doc = XDocument.Load(xmlFilePath);
                 var tables = doc.Descendants("table");
 
-                int tableIndex = 1;
+                int tableIndex = 0;
                 foreach (var table in tables)
                 {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"tab{tableIndex}");
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"tab-{tableIndex}");
                     int row = 1;
 
                     var occupiedCells = new HashSet<(int Row, int Col)>();
@@ -130,8 +130,12 @@ namespace Charles.Synap.Activities.Helpers
                     }
                 }
 
-                FileInfo excelFile = new FileInfo(excelFilePath);
-                package.SaveAs(excelFile);
+                
+                if (tableIndex > 0)
+                {
+                    FileInfo excelFile = new FileInfo(excelFilePath);
+                    package.SaveAs(excelFile);
+                }
             }
         }
         private static XElement CleanElement(XElement element)

@@ -17,8 +17,13 @@ namespace Charles.Synap.Activities.Tests.Unit
             // Assuming you want to write the result to the file
             using StreamWriter writer = new StreamWriter(fs);
             writer.Write(result);
-
-            t.ConvertXmlTablesToExcel(@"C:\Temp\TEST.doc_0008.xml", @"C:\Temp\table2.xlsx", true);
+            string folderPath = @"C:\Temp\494703_pdf";
+            IEnumerable<string> xmlFiles = Directory.EnumerateFiles(folderPath, "*.xml");
+            foreach (string filePath in xmlFiles)
+            {
+                System.Console.WriteLine(filePath);
+                t.ConvertXmlTablesToExcel(filePath, @"C:\Temp\table2.xlsx", true);
+            }
 
             Assert.Equal(0, 0);
         }
